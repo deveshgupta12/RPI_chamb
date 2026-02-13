@@ -1,0 +1,6 @@
+Flask==2.3.0
+Werkzeug==2.3.0
+gpiozero==2.0.1
+picamera2==0.3.14
+opencv-python-headless==4.7.0.72
+libcamera==0.0.5
