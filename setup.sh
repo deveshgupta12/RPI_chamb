@@ -25,17 +25,26 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 echo "[2/6] Installing dependencies..."
+# Install core system packages
 sudo apt-get install -y \
     python3-pip \
     python3-venv \
     git \
-    libatlas-base-dev \
-    libjasper-dev \
-    libharfbuzz0b \
-    libwebp6 \
     build-essential \
-    libopenjp2-7 \
-    libtiff5
+    libatlas-base-dev \
+    libharfbuzz0b \
+    libopenjp2-7
+
+# Install libcap-dev for python-prctl (optional, skip on install failure)
+echo "Installing optional system libraries..."
+sudo apt-get install -y libcap-dev || echo "Note: libcap-dev not available, some features may be limited"
+
+# Optional: Install image processing libraries if available
+for pkg in libjasper-dev libwebp6 libtiff5; do
+    if apt-cache search "^$pkg$" | grep -q .; then
+        sudo apt-get install -y "$pkg" || true
+    fi
+done
 
 echo "[3/6] Creating Python virtual environment..."
 python3 -m venv venv
@@ -43,11 +52,11 @@ source venv/bin/activate
 
 echo "[4/6] Installing Python packages..."
 pip install --upgrade pip setuptools wheel
-pip install flask
-pip install picamera2
-pip install gpiozero
-pip install opencv-python-headless
-pip install libcamera
+pip install -r requirements.txt
+
+echo "Handling optional dependencies..."
+# These may fail on some systems - that's okay
+pip install python-prctl || echo "Note: python-prctl install skipped (optional)"
 
 echo "[5/6] Creating image directory..."
 mkdir -p img
