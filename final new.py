@@ -590,6 +590,28 @@ def generate_frames():
             
     logging.info("Frame generation loop ended") 
 
+@app.route('/')
+def index():
+    """Root route to serve a simple page with links to all endpoints."""
+    return """
+    <h1>Raspberry Pi Camera Controller</h1>
+    <ul>
+        <li><a href="/video_feed">Live Video Feed</a></li>
+        <li><a href="/capture">Capture Image</a></li>
+        <li><a href="/device_status">Device Status</a></li>
+        <li><a href="/system_status">System Status</a></li>
+        <li><a href="/power_status">Power Status</a></li>
+        <li><a href="/led1_status">LED1 Status</a></li>
+        <li><a href="/led2_status">LED2 Status</a></li>
+        <li><a href="/uv_status">UV Status</a></li>
+        <li><a href="/led1_toggle">Toggle LED1</a></li>
+        <li><a href="/led2_toggle">Toggle LED2</a></li>
+        <li><a href="/list_files">List Captured Images</a></li>
+        <li><a href="/ping">Ping Device</a></li>
+        <li><a href="/poweroff">Power Off</a></li>
+    </ul>
+    """
+
 @app.route('/video_feed')
 def video_feed():
     """Video feed endpoint - enables lazy camera startup and shutdown."""
