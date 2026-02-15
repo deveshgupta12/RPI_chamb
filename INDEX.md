@@ -78,7 +78,7 @@ Choose your path based on your needs:
 
 ```
 device-app/
-├── final (1).py                    # Main application (optimized)
+├── final new.py                    # Main application (optimized)
 ├── requirements.txt                # Python dependencies
 ├── setup.sh                        # Automated setup script
 ├── img/                           # Image storage directory
@@ -105,7 +105,7 @@ cd ~/device-app
 bash setup.sh
 
 # 4. Start application
-python3 "final (1).py"
+python3 "final new.py"
 
 # 5. Open browser
 # http://<device-ip>:5000/video_feed
@@ -178,7 +178,7 @@ curl http://<device-ip>:5000/led1_toggle
 
 ## 📝 File Purpose Summary
 
-- **final (1).py** - Main application with all optimizations
+- **final new.py** - Main application with all optimizations
 - **requirements.txt** - Python package list (use for pip install -r)
 - **setup.sh** - Automated setup for RPi (run on device)
 - **README.md** - Comprehensive guide (read for details)

@@ -229,7 +229,7 @@ RPI_ZERO_MODE = False
    - If too blurry: increase quality or resolution
 
 5. **Reset to defaults**
-   - Edit values in top of `final (1).py`
+   - Edit values in top of `final new.py`
    - Or delete this file and use defaults
 
 ---

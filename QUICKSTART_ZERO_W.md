@@ -43,7 +43,7 @@ libcamera-hello -t 5
 # 3. Run application
 cd ~/device-app
 source venv/bin/activate
-python3 "final (1).py"
+python3 "final new.py"
 
 # 4. Access web interface
 # Open browser: http://<device-ip>:5000/video_feed
@@ -68,7 +68,7 @@ Type=simple
 User=pi
 WorkingDirectory=/home/pi/device-app
 Environment="PATH=/home/pi/device-app/venv/bin"
-ExecStart=/home/pi/device-app/venv/bin/python3 "final (1).py"
+ExecStart=/home/pi/device-app/venv/bin/python3 "final new.py"
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -132,7 +132,7 @@ curl http://<ip>:5000/led2_toggle
 
 ## Configuration Tweaks
 
-Edit `final (1).py` to adjust:
+Edit `final new.py` to adjust:
 
 **For better battery life:**
 ```python
@@ -296,7 +296,7 @@ hostname -I
 
 ## Files Included
 
-- `final (1).py` - Main application
+- `final new.py` - Main application
 - `README.md` - Full documentation
 - `BATTERY_OPTIMIZATION_GUIDE.md` - Battery optimization details
 - `RPI_ZERO_W_OPTIMIZATION.md` - Zero W specific optimizations
@@ -315,7 +315,7 @@ For detailed information:
 
 ```bash
 # 1. Start application
-python3 "final (1).py"
+python3 "final new.py"
 
 # 2. In another terminal, test API
 curl http://localhost:5000/device_status

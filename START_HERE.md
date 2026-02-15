@@ -18,7 +18,7 @@ This package contains **production-ready code** optimized specifically for **Ras
 ### Option A: Running in 3 Minutes
 ```bash
 bash setup.sh
-python3 "final (1).py"
+python3 "final new.py"
 # Open browser: http://<device-ip>:5000/video_feed
 ```
 
@@ -27,7 +27,7 @@ python3 "final (1).py"
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python3 "final (1).py"
+python3 "final new.py"
 ```
 
 ### Option C: Complete Walkthrough (10 Minutes)
@@ -52,7 +52,7 @@ Read [QUICKSTART_ZERO_W.md](QUICKSTART_ZERO_W.md)
 13 Files Total:
 
 RUNNABLE:
-  ✅ final (1).py             Main app (production-ready)
+  ✅ final new.py             Main app (production-ready)
   ✅ setup.sh                 Auto-installation
   ✅ requirements.txt         Python dependencies
 
@@ -190,7 +190,7 @@ pip install -r requirements.txt
 ### Step 3: Test
 ```bash
 # Start application
-python3 "final (1).py"
+python3 "final new.py"
 
 # In browser:
 # http://<device-ip>:5000/video_feed
@@ -221,7 +221,7 @@ curl http://<ip>:5000/led1_toggle
 curl http://<ip>:5000/list_files
 ```
 
-## ⚙️ Key Settings (In final (1).py)
+## ⚙️ Key Settings (In final new.py)
 
 Easy to customize:
 ```python
@@ -334,7 +334,7 @@ Pick your speed:
 
 **⚡ Super Fast** (3 min)
 ```bash
-bash setup.sh && python3 "final (1).py"
+bash setup.sh && python3 "final new.py"
 ```
 
 **🚴 Quick** (10 min)

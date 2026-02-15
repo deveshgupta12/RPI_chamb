@@ -4,7 +4,7 @@
 
 ### 🎯 Core Application
 ```
-final (1).py (650+ lines)
+final new.py (650+ lines)
 ├── ⭐ RPi Zero W optimizations
 ├── ✅ Power button control
 ├── ✅ Manual power management
@@ -147,7 +147,7 @@ Result:     Perfect for Zero W!
 ### 🏃 **Sprint (5 minutes)**
 ```bash
 bash setup.sh
-python3 "final (1).py"
+python3 "final new.py"
 # Open: http://<ip>:5000/video_feed
 ```
 
@@ -166,7 +166,7 @@ Read: RPI_ZERO_W_OPTIMIZATION.md
 All Files: 12 total
 
 Application Code:
-  └─ final (1).py ⭐ Main app (modified)
+  └─ final new.py ⭐ Main app (modified)
 
 Setup & Dependencies:
   ├─ setup.sh (new)
@@ -206,7 +206,7 @@ pip install -r requirements.txt
 ```bash
 cd ~ && git clone <repo> device-app && cd device-app && \
 python3 -m venv venv && source venv/bin/activate && \
-pip install -r requirements.txt && python3 "final (1).py"
+pip install -r requirements.txt && python3 "final new.py"
 ```
 
 ## 🎮 API at a Glance
@@ -263,7 +263,7 @@ POWERED_OFF (80 mA)
 ### Scenario 1: "Just want it working"
 1. Read: QUICKSTART_ZERO_W.md
 2. Run: `bash setup.sh`
-3. `python3 "final (1).py"`
+3. `python3 "final new.py"`
 4. Open browser: stream URL
 5. Done! ✓
 
@@ -277,7 +277,7 @@ POWERED_OFF (80 mA)
 ### Scenario 3: "Want to optimize for my needs"
 1. Read: RPI_ZERO_W_OPTIMIZATION.md
 2. Check: CONFIG.md presets
-3. Edit: final (1).py settings
+3. Edit: final new.py settings
 4. Test: Performance metrics
 5. Deploy: Fine-tuned version
 

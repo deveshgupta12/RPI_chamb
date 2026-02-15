@@ -156,7 +156,7 @@ chmod +x final\ \(1\).py
 
 ### Battery Optimization Settings
 
-Edit the top of `final (1).py` to adjust power management:
+Edit the top of `final new.py` to adjust power management:
 
 ```python
 # --- Battery Optimization Settings ---
@@ -194,7 +194,7 @@ INACTIVITY_SHUTDOWN_TIMEOUT = 300    # 5 minutes
 ```bash
 source ~/device-app/venv/bin/activate
 cd ~/device-app
-python3 "final (1).py"
+python3 "final new.py"
 ```
 
 #### Option 2: Production Mode (Recommended) - Using Gunicorn
@@ -224,7 +224,7 @@ Type=simple
 User=pi
 WorkingDirectory=/home/pi/device-app
 Environment="PATH=/home/pi/device-app/venv/bin"
-ExecStart=/home/pi/device-app/venv/bin/python3 "final (1).py"
+ExecStart=/home/pi/device-app/venv/bin/python3 "final new.py"
 Restart=on-failure
 RestartSec=10
 
@@ -402,7 +402,7 @@ newgrp gpio
 
 **Or run with sudo:**
 ```bash
-sudo python3 "final (1).py"
+sudo python3 "final new.py"
 ```
 
 ### High Power Consumption
@@ -418,7 +418,7 @@ sudo journalctl -u device-app -n 50
 
 # Run directly to see errors
 cd device-app
-python3 "final (1).py"
+python3 "final new.py"
 ```
 
 ### Video Stream Stuttering or Laggy

@@ -55,7 +55,7 @@
 
 ## Configuration Variables
 
-Located at top of `final (1).py`:
+Located at top of `final new.py`:
 
 ```python
 # Hero flags
@@ -103,7 +103,7 @@ Failed captures: 0%            ✓ Ultra-reliable
 ## Files Changed & Added
 
 ### Modified
-- `final (1).py` - Core application with optimizations
+- `final new.py` - Core application with optimizations
 - `README.md` - Added Zero W specs and comparison
 
 ### Created New
@@ -174,7 +174,7 @@ RPI_ZERO_MODE = False                  # Use full settings
 ssh pi@<device-ip>
 
 # Start application
-python3 "final (1).py"
+python3 "final new.py"
 
 # In another terminal, monitor resources:
 watch -n 1 'ps aux | grep python | head -5'

@@ -4,10 +4,10 @@ Complete this checklist before deploying to production.
 
 ## 📋 Code & Environment
 
-- [ ] Python code has no syntax errors: `python3 -m py_compile "final (1).py"`
+- [ ] Python code has no syntax errors: `python3 -m py_compile "final new.py"`
 - [ ] All dependencies installed: `pip install -r requirements.txt`
 - [ ] Virtual environment activated: `source venv/bin/activate`
-- [ ] Flask can start: `python3 "final (1).py"` (Ctrl+C to stop)
+- [ ] Flask can start: `python3 "final new.py"` (Ctrl+C to stop)
 - [ ] No errors in startup log
 
 ## 🎥 Hardware
@@ -202,7 +202,7 @@ curl http://localhost:5000/led2_toggle
 
 ## 💾 Backup & Recovery
 
-- [ ] Config backed up: `cp final\ \(1\).py final\ \(1\).py.bak`
+- [ ] Config backed up: `cp final\ new.py final\ new.py.bak`
 - [ ] Image files backed up (if valuable)
 - [ ] Can restore from backup if needed
 - [ ] Recovery procedure documented

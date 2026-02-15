@@ -115,7 +115,7 @@ Type=simple
 User=pi
 WorkingDirectory=$(pwd)
 Environment="PATH=$(pwd)/venv/bin"
-ExecStart=$(pwd)/venv/bin/python3 "final (1).py"
+ExecStart=$(pwd)/venv/bin/python3 "final new.py"
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -141,7 +141,7 @@ echo ""
 echo "Next steps:"
 echo "1. Enable camera (if you skipped it): raspi-config"
 echo "2. Reboot: sudo reboot"
-echo "3. Start the app: python3 \"final (1).py\""
+echo "3. Start the app: python3 \"final new.py\""
 echo "4. View in browser: http://<device-ip>:5000/video_feed"
 echo ""
 echo "For help, see:"

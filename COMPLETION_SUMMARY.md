@@ -5,12 +5,13 @@ Your Raspberry Pi Zero W IoT device is now fully optimized for smooth operations
 ## ✨ What's Been Delivered
 
 ### 1. **Optimized Application Code**
-- ✅ `final (1).py` - Production-ready with all optimizations
+- ✅ `final new.py` - Production-ready with all optimizations
 - ✅ Syntax verified - No errors
 - ✅ RPi Zero W specific settings enabled
 - ✅ Dual resolution strategy (streaming + capture)
 - ✅ Adaptive frame rate (10 FPS smooth)
 - ✅ Power management integrated
+- ✅ Auto-shutdown temporarily disabled for testing
 - ✅ Full backwards compatibility
 
 ### 2. **Documentation (11 Files)**
@@ -118,7 +119,7 @@ One-Core Friendly:  ✓ YES - Engineered for it
 ### Option 1: Fastest Setup (5 minutes)
 ```bash
 bash setup.sh
-python3 "final (1).py"
+python3 "final new.py"
 # Open browser: http://<device-ip>:5000/video_feed
 ```
 
@@ -167,7 +168,7 @@ Read [RPI_ZERO_W_OPTIMIZATION.md](RPI_ZERO_W_OPTIMIZATION.md) first
 
 ```
 device-app/
-├── final (1).py                      # ⭐ Main application
+├── final new.py                      # ⭐ Main application
 ├── requirements.txt                  # Dependencies
 ├── setup.sh                         # Auto-setup script
 │
@@ -268,19 +269,19 @@ STREAM_JPEG_QUALITY = 40             # Heavy compression
 ## 🔧 Customization Simplified
 
 ### Change Resolution
-Edit in `final (1).py` line ~40:
+Edit in `final new.py` line ~40:
 ```python
 STREAM_RESOLUTION = (320, 480)  # Change these numbers
 ```
 
 ### Adjust Timeouts
-Edit in `final (1).py` line ~32:
+Edit in `final new.py` line ~32:
 ```python
 INACTIVITY_IDLE_TIMEOUT = 300      # Change timeout
 ```
 
 ### Toggle RPi Mode
-Edit in `final (1).py` line ~31:
+Edit in `final new.py` line ~31:
 ```python
 RPI_ZERO_MODE = True  # False for RPi 4B/5
 ```

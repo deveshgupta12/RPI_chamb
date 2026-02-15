@@ -297,7 +297,7 @@ def get_adaptive_quality(network_speed):
 ### 4. Use Process Affinity
 Force Python to use single core for consistency:
 ```bash
-taskset -c 0 python3 "final (1).py"
+taskset -c 0 python3 "final new.py"
 ```
 
 ## Comparison: RPi Zero W vs RPi 4
