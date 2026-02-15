@@ -72,23 +72,21 @@ def initialize_camera():
         transform = Transform(rotation=90)
         
         # Optimize camera configuration for RPi Zero W
-        # Use MJPEG format when available for better performance
+        # Use proper format for streaming
         main_config = {
-            "format": 'MJPEG' if RPI_ZERO_MODE else 'XRGB8888',
+            "format": 'XBGR8888',  # Using XBGR for better OpenCV compatibility
             "size": STREAM_RESOLUTION
         }
         
         camera.configure(camera.create_preview_configuration(
             main=main_config,
-            transform=transform
+            transform=transform,
+            buffer_count=STREAM_BUFFER_SIZE
         ))
         
-        camera.start()
-        
-        # Optimize autofocus and exposure for better images
+        # Set controls before starting camera
         camera.set_controls({
-            "AfMode": controls.AfModeEnum.Auto,
-            "AfTrigger": controls.AfTriggerEnum.Start,
+            "AfMode": controls.AfModeEnum.Continuous,  # Continuous autofocus
             "ExposureTime": 20000,  # Adjust for different lighting
             "AnalogueGain": 1.0,     # Start with normal gain
             "Brightness": 0.0,
@@ -96,10 +94,16 @@ def initialize_camera():
             "Saturation": 1.0
         })
         
+        camera.start()
+        
+        # Small delay to let camera settle
+        time.sleep(0.5)
+        
         camera_initialized = True
         logging.info(f"Camera initialized (RPi Zero W mode: {RPI_ZERO_MODE})")
     except Exception as e:
         logging.error(f"Failed to initialize camera: {e}")
+        camera_initialized = False
 
 def shutdown_camera():
     """Gracefully shutdown camera to save power."""
@@ -487,18 +491,29 @@ def generate_frames():
     global VIDEO_STREAM_ACTIVE
     
     frames_without_data = 0
-    max_frames_without_data = 10
+    max_frames_without_data = 30  # Increased to allow more retries
     frame_skip_counter = 0
     skip_rate = 1 if RPI_ZERO_MODE else 0
     last_frame_time = time.time()
     frame_interval = 1.0 / STREAM_FRAMERATE
     jpeg_quality = STREAM_JPEG_QUALITY
     
+    # Retry counter for initialization
+    init_retry_count = 0
+    max_init_retries = 5
+    
     while VIDEO_STREAM_ACTIVE:
         try:
             # Ensure camera is running for streaming
             if not camera_initialized:
-                initialize_camera()
+                if init_retry_count < max_init_retries:
+                    logging.info(f"Initializing camera for streaming (attempt {init_retry_count + 1})")
+                    initialize_camera()
+                    init_retry_count += 1
+                    time.sleep(0.5)  # Give camera time to initialize
+                else:
+                    logging.error("Max camera initialization retries exceeded")
+                    break
             
             # Frame rate limiting for smoother playback
             current_time = time.time()
@@ -510,22 +525,42 @@ def generate_frames():
             last_frame_time = time.time()
             
             # Use lock with timeout to prevent hanging on Zero W
-            if not camera_lock.acquire(timeout=1.0):
+            if not camera_lock.acquire(timeout=2.0):  # Increased timeout
+                logging.warning("Camera lock timeout")
                 continue
             
             try:
-                frame = camera.capture_array()
+                # Use capture_buffer instead of capture_array for better compatibility
+                frame_buffer = camera.capture_buffer("main")
+                if frame_buffer is None:
+                    frames_without_data += 1
+                    logging.warning(f"Empty frame captured ({frames_without_data}/{max_frames_without_data})")
+                    if frames_without_data > max_frames_without_data:
+                        logging.error("Too many empty frames, stopping stream")
+                        break
+                    time.sleep(0.1)
+                    continue
+                
+                # Convert buffer to numpy array for OpenCV processing
+                import numpy as np
+                frame_array = np.frombuffer(frame_buffer, dtype=np.uint8)
+                
+                # Reshape based on stream resolution (assuming RGB format)
+                frame = frame_array.reshape((STREAM_RESOLUTION[1], STREAM_RESOLUTION[0], 3))
+                
+                frames_without_data = 0  # Reset counter on successful frame
+                
+            except Exception as capture_error:
+                camera_lock.release()
+                frames_without_data += 1
+                logging.warning(f"Frame capture error: {capture_error} ({frames_without_data}/{max_frames_without_data})")
+                if frames_without_data > max_frames_without_data:
+                    logging.error("Too many frame capture errors, stopping stream")
+                    break
+                time.sleep(0.2)
+                continue
             finally:
                 camera_lock.release()
-            
-            if frame is None:
-                frames_without_data += 1
-                if frames_without_data > max_frames_without_data:
-                    break
-                time.sleep(0.05)
-                continue
-            
-            frames_without_data = 0
             
             # Skip frames on Zero W for smoother playback
             if RPI_ZERO_MODE:
@@ -538,6 +573,7 @@ def generate_frames():
                                       [cv2.IMWRITE_JPEG_QUALITY, int(jpeg_quality)])
             
             if not ret:
+                logging.warning("JPEG encoding failed")
                 continue
                 
             frame_bytes = buffer.tobytes()
@@ -547,8 +583,12 @@ def generate_frames():
                    b'\r\n' + frame_bytes + b'\r\n')
             
         except Exception as e:
-            logging.warning(f"Frame generation error: {e}")
-            break 
+            logging.error(f"Frame generation error: {e}")
+            # Don't break immediately, try to recover
+            time.sleep(0.5)
+            continue
+            
+    logging.info("Frame generation loop ended") 
 
 @app.route('/video_feed')
 def video_feed():
@@ -559,14 +599,27 @@ def video_feed():
     
     if system_state == SystemState.IDLE:
         # Wake up camera from idle as needed
+        logging.info("Waking camera from idle for video stream")
         initialize_camera()
         set_system_state(SystemState.RUNNING)
+    
+    # Add a small delay to ensure camera is ready
+    time.sleep(0.1)
     
     VIDEO_STREAM_ACTIVE = True
     logging.info("Video stream started")
     
     try:
-        return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        response = Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        # Add headers to prevent caching
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+    except Exception as e:
+        logging.error(f"Error in video feed response: {e}")
+        VIDEO_STREAM_ACTIVE = False
+        return "Video stream error", 500
     finally:
         VIDEO_STREAM_ACTIVE = False
         logging.info("Video stream ended")
