@@ -147,7 +147,7 @@ def shutdown_camera():
 
 # Define the buttons and LEDs
 led1_button = Button(2)
-led2_button = Button(3)
+led2_button = Button(26)  # Changed from pin 3 to pin 26 to avoid GPIO conflict
 capture_button = Button(4, hold_time=2)
 power_button = Button(17, hold_time=3)  # Long press (3s) to toggle power
 led1 = LED(18, active_high=False)
