@@ -12,7 +12,7 @@ The main configuration is controlled through the `config.ini` file with the foll
 
 ### [Streaming]
 - `STREAM_RESOLUTION` (Tuple): Video stream resolution as (width, height)
-  - RPi Zero W recommended: (320, 480) or lower
+  - RPi Zero W recommended: (480, 640) for improved quality
   - RPi 4B/5 recommended: (480, 640) or higher
 - `STREAM_FRAMERATE` (Integer): Frames per second (affects smoothness)
   - RPi Zero W recommended: 8-10 FPS

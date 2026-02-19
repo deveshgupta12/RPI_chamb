@@ -423,8 +423,8 @@ python3 "final new.py"
 
 ### Video Stream Stuttering or Laggy
 1. Reduce stream resolution (currently 480×640)
-2. Lower frame rate (currently 20 FPS max)
-3. Reduce JPEG quality (currently 60%)
+2. Lower frame rate (currently 10 FPS max)
+3. Reduce JPEG quality (currently 50%)
 4. Move closer to WiFi router or use Ethernet
 
 ### Button Presses Not Registering
@@ -556,7 +556,7 @@ STREAM_JPEG_QUALITY = 40
 
 ### WiFi 2-5 Mbps (Typical Home)
 ```python
-STREAM_RESOLUTION = (320, 480)  # Default
+STREAM_RESOLUTION = (480, 640)  # Improved resolution for Zero W
 STREAM_FRAMERATE = 10
 STREAM_JPEG_QUALITY = 50        # Recommended for Zero W
 ```

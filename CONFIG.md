@@ -13,7 +13,7 @@ RPI_ZERO_MODE = True
 # Resolution: (width, height)
 # RPi Zero W: (320, 480) or lower
 # RPi 4B/5:   (480, 640) or higher
-STREAM_RESOLUTION = (320, 480)
+STREAM_RESOLUTION = (480, 640)
 
 # Frames per second (affects smoothness)
 # RPi Zero W: 8-10 FPS (smooth on single-core)

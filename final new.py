@@ -41,7 +41,7 @@ VIDEO_STREAM_ACTIVE = False  # Track if video stream is being watched
 DEEP_SLEEP_ENABLED = False  # DISABLED - Aggressive power saving off
 
 # --- Camera Streaming Optimization (RPi Zero W) ---
-STREAM_RESOLUTION = (320, 480)  # Reduced for RPi Zero W (was 480x640)
+STREAM_RESOLUTION = (480, 640)  # Increased resolution for better quality
 STREAM_FRAMERATE = 10  # 10 FPS for smoothness on Zero (was 20 FPS)
 STREAM_JPEG_QUALITY = 50  # Reduced quality for faster encoding (was 60)
 STREAM_BUFFER_SIZE = 8  # Reduced buffer to save RAM on Zero
