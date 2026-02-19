@@ -590,8 +590,28 @@ def generate_frames():
                     import numpy as np
                     frame_array = np.frombuffer(frame_buffer, dtype=np.uint8)
                     
-                    # Reshape based on stream resolution (assuming RGB format)
-                    frame = frame_array.reshape((STREAM_RESOLUTION[1], STREAM_RESOLUTION[0], 3))
+                    # Calculate expected buffer size based on actual camera configuration
+                    width, height = STREAM_RESOLUTION
+                    # Assuming XBGR8888 format (4 bytes per pixel)
+                    expected_size = width * height * 4
+                    
+                    # Check if buffer size matches expectation
+                    if len(frame_array) != expected_size:
+                        logging.warning(f"Buffer size mismatch: got {len(frame_array)}, expected {expected_size}")
+                        # Try to adjust resolution dynamically
+                        adjusted_height = len(frame_array) // (width * 4)
+                        if adjusted_height > 0:
+                            frame = frame_array.reshape((adjusted_height, width, 4))
+                            # Convert from BGRA to BGR
+                            frame = frame[:, :, :3]
+                        else:
+                            logging.error("Cannot reshape frame array due to size mismatch")
+                            continue
+                    else:
+                        # Reshape based on stream resolution (assuming XBGR format)
+                        frame_bgra = frame_array.reshape((height, width, 4))
+                        # Convert from BGRA to BGR for OpenCV
+                        frame = frame_bgra[:, :, :3]
                     
                     frames_without_data = 0  # Reset counter on successful frame
                     
