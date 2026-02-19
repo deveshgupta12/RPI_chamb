@@ -517,7 +517,7 @@ This project is provided as-is for educational and personal use.
 
 | Metric | RPi Zero W | RPi 4B |
 |--------|-----------|--------|
-| Resolution | 2592×1944 | 2592×1944 |
+| Resolution | 3840×2160 | 3840×2160 |
 | JPEG Quality | 85% | 85% |
 | File Size | ~1-1.2 MB | ~0.8-1 MB |
 | Capture Time | 3-6s | 1-2s |
@@ -573,7 +573,7 @@ For more details on RPi Zero W optimization, see [RPI_ZERO_W_OPTIMIZATION.md](RP
 ## Changelog
 
 ### v2.1 - RPi Zero W Optimizations
-- ✅ Dual resolution strategy (320×480 stream, 2592×1944 capture)
+- ✅ Dual resolution strategy (320×480 stream, 3840×2160 capture)
 - ✅ Adaptive frame rate (10 FPS for smooth playback on limited CPU)
 - ✅ Optimized JPEG quality (50% for stream, 85% for capture)
 - ✅ Frame skipping algorithm for consistent framerate

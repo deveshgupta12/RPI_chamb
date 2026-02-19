@@ -48,7 +48,7 @@ STREAM_BUFFER_SIZE = 8  # Reduced buffer to save RAM on Zero
 STREAM_TIMEOUT = 30  # Timeout for stream operations
 
 # --- Image Capture Optimization ---
-CAPTURE_RESOLUTION = (2592, 1944)  # High quality capture (full camera sensor)
+CAPTURE_RESOLUTION = (3840, 2160)  # High quality capture (4K resolution)
 CAPTURE_JPEG_QUALITY = 85  # High quality for captures
 AUTOFOCUS_TIMEOUT = 5  # Max time for autofocus
 

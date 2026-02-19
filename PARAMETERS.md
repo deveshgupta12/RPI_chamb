@@ -26,7 +26,7 @@ The main configuration is controlled through the `config.ini` file with the foll
 
 ### [Image_Capture]
 - `CAPTURE_RESOLUTION` (Tuple): High-quality image capture resolution
-  - Full sensor resolution recommended: (2592, 1944)
+  - Full sensor resolution recommended: (3840, 2160)
 - `CAPTURE_JPEG_QUALITY` (Integer): JPEG quality for captures (0-100)
   - Usually high quality recommended: 85+
 - `AUTOFOCUS_TIMEOUT` (Integer): Autofocus timeout (seconds)

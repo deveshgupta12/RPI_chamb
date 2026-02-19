@@ -37,7 +37,7 @@ STREAM_TIMEOUT = 30
 # These settings don't affect stream performance
 
 # Capture resolution (full sensor is best)
-CAPTURE_RESOLUTION = (2592, 1944)
+CAPTURE_RESOLUTION = (3840, 2160)
 
 # JPEG quality for captures (usually high)
 CAPTURE_JPEG_QUALITY = 85
