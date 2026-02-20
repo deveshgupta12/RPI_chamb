@@ -41,14 +41,14 @@ VIDEO_STREAM_ACTIVE = False  # Track if video stream is being watched
 DEEP_SLEEP_ENABLED = False  # DISABLED - Aggressive power saving off
 
 # --- Camera Streaming Optimization (RPi Zero W) ---
-STREAM_RESOLUTION = (320, 480)  # Reduced for RPi Zero W (was 480x640)
+STREAM_RESOLUTION = (480, 640)  # Increased resolution for better quality
 STREAM_FRAMERATE = 10  # 10 FPS for smoothness on Zero (was 20 FPS)
 STREAM_JPEG_QUALITY = 50  # Reduced quality for faster encoding (was 60)
 STREAM_BUFFER_SIZE = 8  # Reduced buffer to save RAM on Zero
 STREAM_TIMEOUT = 30  # Timeout for stream operations
 
 # --- Image Capture Optimization ---
-CAPTURE_RESOLUTION = (2592, 1944)  # High quality capture (full camera sensor)
+CAPTURE_RESOLUTION = (3840, 2160)  # High quality capture (4K resolution)
 CAPTURE_JPEG_QUALITY = 85  # High quality for captures
 AUTOFOCUS_TIMEOUT = 5  # Max time for autofocus
 
@@ -148,7 +148,7 @@ def shutdown_camera():
 
 # Define the buttons and LEDs
 led1_button = Button(2)
-led2_button = Button(3)
+led2_button = Button(21)  # Changed from pin 3 to pin 21 to avoid GPIO conflict
 capture_button = Button(4, hold_time=2)
 power_button = Button(17, hold_time=3)  # Long press (3s) to toggle power
 led1 = LED(18, active_high=False)
@@ -591,8 +591,28 @@ def generate_frames():
                     import numpy as np
                     frame_array = np.frombuffer(frame_buffer, dtype=np.uint8)
                     
-                    # Reshape based on stream resolution (assuming RGB format)
-                    frame = frame_array.reshape((STREAM_RESOLUTION[1], STREAM_RESOLUTION[0], 3))
+                    # Calculate expected buffer size based on actual camera configuration
+                    width, height = STREAM_RESOLUTION
+                    # Assuming XBGR8888 format (4 bytes per pixel)
+                    expected_size = width * height * 4
+                    
+                    # Check if buffer size matches expectation
+                    if len(frame_array) != expected_size:
+                        logging.warning(f"Buffer size mismatch: got {len(frame_array)}, expected {expected_size}")
+                        # Try to adjust resolution dynamically
+                        adjusted_height = len(frame_array) // (width * 4)
+                        if adjusted_height > 0:
+                            frame = frame_array.reshape((adjusted_height, width, 4))
+                            # Convert from BGRA to BGR
+                            frame = frame[:, :, :3]
+                        else:
+                            logging.error("Cannot reshape frame array due to size mismatch")
+                            continue
+                    else:
+                        # Reshape based on stream resolution (assuming XBGR format)
+                        frame_bgra = frame_array.reshape((height, width, 4))
+                        # Convert from BGRA to BGR for OpenCV
+                        frame = frame_bgra[:, :, :3]
                     
                     frames_without_data = 0  # Reset counter on successful frame
                     
