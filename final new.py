@@ -105,10 +105,11 @@ def initialize_camera():
         ))
         
         # Set controls before starting camera
+        # Using automatic exposure for better adaptation to lighting conditions
         camera.set_controls({
             "AfMode": controls.AfModeEnum.Continuous,  # Continuous autofocus
-            "ExposureTime": 20000,  # Adjust for different lighting
-            "AnalogueGain": 1.0,     # Start with normal gain
+            "AeEnable": True,  # Enable automatic exposure
+            "AeExposureMode": controls.AeExposureModeEnum.Normal,
             "Brightness": 0.0,
             "Contrast": 1.0,
             "Saturation": 1.0
