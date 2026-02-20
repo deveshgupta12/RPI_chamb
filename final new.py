@@ -112,7 +112,8 @@ def initialize_camera():
             "AeExposureMode": controls.AeExposureModeEnum.Normal,
             "Brightness": 0.0,
             "Contrast": 1.0,
-            "Saturation": 1.0
+            "Saturation": 1.0,
+            "ColorCorrectionMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]  # Identity matrix for neutral colors
         })
         
         camera.start()
@@ -376,8 +377,9 @@ def capture_image():
             camera.set_controls({
                 "AfMode": controls.AfModeEnum.Auto,
                 "AfTrigger": controls.AfTriggerEnum.Start,
-                "ExposureTime": 30000,  # Slightly longer exposure for better quality
-                "AnalogueGain": 1.0
+                "AeEnable": True,  # Use automatic exposure instead of fixed
+                "AnalogueGain": 1.0,
+                "ColorCorrectionMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]  # Identity matrix for neutral colors
             })
             
             # Wait for autofocus to complete
@@ -602,17 +604,19 @@ def generate_frames():
                         # Try to adjust resolution dynamically
                         adjusted_height = len(frame_array) // (width * 4)
                         if adjusted_height > 0:
-                            frame = frame_array.reshape((adjusted_height, width, 4))
-                            # Convert from BGRA to BGR
-                            frame = frame[:, :, :3]
+                            frame_bgra = frame_array.reshape((adjusted_height, width, 4))
+                            # Extract only the BGR channels (indices 2,1,0) from XBGR format
+                            frame = frame_bgra[:, :, 0:3]  # Remove padding channel
+                            frame = frame[:, :, [2, 1, 0]]  # Convert BGR to RGB for OpenCV
                         else:
                             logging.error("Cannot reshape frame array due to size mismatch")
                             continue
                     else:
                         # Reshape based on stream resolution (assuming XBGR format)
                         frame_bgra = frame_array.reshape((height, width, 4))
-                        # Convert from BGRA to BGR for OpenCV
-                        frame = frame_bgra[:, :, :3]
+                        # Extract only the BGR channels (indices 2,1,0) from XBGR format
+                        frame = frame_bgra[:, :, 0:3]  # Remove padding channel
+                        frame = frame[:, :, [2, 1, 0]]  # Convert BGR to RGB for OpenCV
                     
                     frames_without_data = 0  # Reset counter on successful frame
                     
